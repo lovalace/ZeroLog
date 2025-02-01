@@ -1,4 +1,4 @@
-# ZeroLog
+# ZeroCore
 ABAP Dynamic Logger
 
 # Log Kütüphanesi Metodları ve Kullanım Alanları
