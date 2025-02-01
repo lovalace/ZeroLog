@@ -1,0 +1,2 @@
+# ZeroLog
+ABAP Dynamic Logger
