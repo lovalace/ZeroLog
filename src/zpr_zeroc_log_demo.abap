@@ -1,91 +1,56 @@
 REPORT zpr_zeroc_log_demo.
 
-"----------------------------------------------------------------------
-" Konsol çıktısı üzerinden ZeroC log yöneticisinin örnek kullanımı.
-"----------------------------------------------------------------------
-CLASS lcl_console_target DEFINITION FINAL.
+CLASS lcl_table_payload DEFINITION FINAL.
   PUBLIC SECTION.
-    METHODS handle_log
-      IMPORTING
-        is_entry TYPE zcl_zeroc_log_manager=>ty_log_entry.
-    METHODS rotate.
-    METHODS cleanup
-      IMPORTING
-        iv_days TYPE i.
+    METHODS constructor.
+    METHODS run.
+  PRIVATE SECTION.
+    TYPES: BEGIN OF ty_fi_doc,
+             bukrs TYPE string,
+             belnr TYPE string,
+             gjahr TYPE string,
+           END OF ty_fi_doc.
+    TYPES ty_string_table TYPE STANDARD TABLE OF string WITH EMPTY KEY.
+    DATA mo_logger TYPE REF TO zcl_zeroc_log_manager.
+    METHODS register_defaults.
+    METHODS simulate_logging.
 ENDCLASS.
 
-CLASS lcl_console_target IMPLEMENTATION.
-  METHOD handle_log.
-    WRITE: / |[{ is_entry-timestamp }] { is_entry-level } ({ is_entry-module }): { is_entry-message }|.
+CLASS lcl_table_payload IMPLEMENTATION.
+  METHOD constructor.
+    mo_logger = NEW zcl_zeroc_log_manager( iv_default_level = 'INFO' ).
 
-    IF is_entry-data IS NOT INITIAL.
-      WRITE: / |  Data     : { is_entry-data }|.
-    ENDIF.
-
-    IF is_entry-metadata IS NOT INITIAL.
-      WRITE: / |  Metadata : { is_entry-metadata }|.
-    ENDIF.
+    register_defaults( ).
   ENDMETHOD.
 
-  METHOD rotate.
-    WRITE: / 'Rotate invoked for console target.'.
+  METHOD run.
+    simulate_logging( ).
   ENDMETHOD.
 
-  METHOD cleanup.
-    WRITE: / |Cleanup invoked (days = { iv_days }).|.
+  METHOD register_defaults.
+    mo_logger->register_module_defaults( VALUE #( module = 'SD' level = 'WARN' priority = 'HIGH' owner = 'SD_CORE' ) ).
+    mo_logger->register_module_defaults( VALUE #( module = 'FI' level = 'INFO' priority = 'MEDIUM' owner = 'FIN_TEAM' ) ).
+  ENDMETHOD.
+
+  METHOD simulate_logging.
+    mo_logger->log( iv_message = 'Sadece mesaj ile hızlı loglama.' ).
+
+    mo_logger->log(
+      iv_message = 'SD sipariş güncelleme hatası'
+      is_context = VALUE #( module = 'SD' ) ).
+
+    DATA(lt_items) = VALUE ty_string_table( ( `1000001` ) ( `1000002` ) ).
+    mo_logger->log(
+      iv_message = 'SD sipariş listesi'
+      ir_payload = REF #( lt_items )
+      is_context = VALUE #( module = 'SD' level = 'ERROR' ) ).
+
+    DATA(ls_fi_doc) = VALUE ty_fi_doc( bukrs = '1000' belnr = '1800000010' gjahr = '2024' ).
+    mo_logger->log(
+      ir_payload = REF #( ls_fi_doc )
+      is_context = VALUE #( module = 'FI' owner = sy-uname ) ).
   ENDMETHOD.
 ENDCLASS.
 
 START-OF-SELECTION.
-  DATA(lo_logger) = NEW zcl_zeroc_log_manager( iv_default_level = 'INFO' ).
-  DATA(lo_target) = NEW lcl_console_target( ).
-
-  lo_logger->add_log_target( lo_target ).
-
-  " INFO seviyesi varsayılan olduğu için DEBUG mesajı filtrelenecek.
-  lo_logger->debug(
-    iv_message = 'Bu satır gösterilmeyecek (seviyenin altında)'
-    iv_module  = 'DEMO'
-    iv_metadata = 'initial state' ).
-
-  lo_logger->info(
-    iv_message = 'ZeroC log yöneticisi demoya başladı'
-    iv_module  = 'DEMO' ).
-
-  lo_logger->set_log_level( 'DEBUG' ).
-
-  lo_logger->debug(
-    iv_message = 'Debug modu aktif'
-    iv_module  = 'DEMO'
-    iv_data    = 'payload=42'
-    iv_metadata = 'step=1' ).
-
-  lo_logger->set_log_level_by_module(
-    iv_module = 'BATCH'
-    iv_level  = 'ERROR' ).
-
-  lo_logger->warning(
-    iv_message = 'Batch modülü için uyarı mesajı'
-    iv_module  = 'BATCH'
-    iv_metadata = 'threshold=low' ).
-
-  lo_logger->error(
-    iv_message = 'Batch modülü hata verdi'
-    iv_module  = 'BATCH'
-    iv_data    = 'job=ZBATCH01'
-    iv_metadata = 'severity=high' ).
-
-  lo_logger->enable_async_logging( ).
-  lo_logger->info(
-    iv_message = 'Asenkron kuyruğa giden kayıt'
-    iv_module  = 'DEMO'
-    iv_metadata = 'step=2' ).
-
-  lo_logger->flush( ).
-
-  lo_logger->rotate_logs( ).
-  lo_logger->cleanup_logs( iv_days = 14 ).
-
-  lo_logger->remove_log_target( lo_target ).
-
-  WRITE: / 'Demo tamamlandı.'.
+  NEW lcl_table_payload( )->run( ).

@@ -12,14 +12,12 @@
 - Sistem performansı için log yazımı asenkron opsiyonu desteklenecek, fakat senkron mod da korunacak.
 
 ## 3. Mevcut Özellikler
-Mevcut README içeriğine göre log kütüphanesinde aşağıdaki yetkinlikler bulunmaktadır:
-- Temel log kaydı (seviyeler: DEBUG, INFO, WARNING, ERROR, FATAL) ve isteğe bağlı veri/meta veri ekleme.
-- Seviyeye özel kısayol metodları (`debug`, `info`, `warning`, `error`, `fatal`).
-- Log hedefi yönetimi (`addLogTarget`, `removeLogTarget`).
-- Küresel veya modül bazlı log seviyesi belirleme (`setLogLevel`, `setLogLevelByModule`).
-- Yapılandırma yönetimi (`setConfig`, `getConfig`).
-- Log rotasyonu (`rotateLogs`) ve yaşlandırma temizliği (`cleanupLogs`).
-- Asenkron loglamaya destekleyen `flush` akışı.
+Güncel sınıf tasarımına göre kütüphanede aşağıdaki yetkinlikler hazırdır:
+- `log` metoduyla tek adımda mesaj + isteğe bağlı veri referansı gönderme.
+- Modül bazlı varsayılan seviye/öncelik/sahip bilgisi tutma ve otomatik birleştirme.
+- `HANDLE_LOG` metoduna sahip hedef nesneleri dinamik olarak ekleyip konsol hedefini varsayılan olarak kullanma.
+- Payload verisini (tablo/struct) otomatik XML metnine dönüştürme.
+- Agile planı içerisinde tamamlanan işleri proje planında *Yapıldı* olarak işaretleme.
 
 ## 4. Eklenmesi Planlanan Özellikler
 - **ZCL_ZEROC_LOG_MANAGER:** Log kütüphanesi çekirdeğinin SAP S/4HANA 1909 SP05 için yeniden düzenlenmesi (temiz kod, minimal ve anlaşılır OOP). *(Yapıldı)*
@@ -42,7 +40,7 @@ Mevcut README içeriğine göre log kütüphanesinde aşağıdaki yetkinlikler b
 ### 5.1 Sprint Genel Bakışı (her biri 2 hafta)
 1. **Sprint 1 – Çekirdek Yeniden Yapılandırma**
    - Kütüphanenin S/4HANA 1909 uyumlu sınıf ve arayüzlerinin oluşturulması. *(Yapıldı)*
-   - Log seviyeleri ve mesaj işleme akışının sadeleştirilmesi.
+   - Log seviyeleri ve mesaj işleme akışının sadeleştirilmesi. *(Yapıldı)*
    - ABAP Unit ile çekirdek fonksiyon testlerinin hazırlanması.
 
 2. **Sprint 2 – Customizing ve Bakım Ekranları**
