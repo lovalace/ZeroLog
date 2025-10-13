@@ -1,6 +1,10 @@
 # ZeroCore
 ABAP Dynamic Logger
 
+## Proje Planı
+
+SAP S/4HANA 1909 SP05 için hazırlanan Agile proje planı, mevcut ve planlanan özelliklerin detayları ile birlikte `docs/PROJECT_PLAN.md` dosyasında yer almaktadır.
+
 # Log Kütüphanesi Metodları ve Kullanım Alanları
 
 Bu döküman, log kütüphanesindeki temel metodları ve bu metodların nerelerde ve nasıl kullanılabileceğine dair örnek senaryoları içermektedir.
