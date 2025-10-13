@@ -5,6 +5,10 @@ ABAP Dynamic Logger
 
 SAP S/4HANA 1909 SP05 için hazırlanan Agile proje planı, mevcut ve planlanan özelliklerin detayları ile birlikte `docs/PROJECT_PLAN.md` dosyasında yer almaktadır.
 
+## Örnek Uygulama
+
+`src/zpr_zeroc_log_demo.abap` raporu, `ZCL_ZEROC_LOG_MANAGER` sınıfının ABAP 7.50+ üzerinde nasıl kullanılacağını adım adım göstermektedir. Konsol hedefi ile çalıştırıldığında farklı log seviyeleri, modül bazlı seviye yapılandırması ve asenkron kuyruk akışı gözlemlenebilir.
+
 # Log Kütüphanesi Metodları ve Kullanım Alanları
 
 Bu döküman, log kütüphanesindeki temel metodları ve bu metodların nerelerde ve nasıl kullanılabileceğine dair örnek senaryoları içermektedir.

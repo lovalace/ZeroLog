@@ -23,6 +23,7 @@ Mevcut README içeriğine göre log kütüphanesinde aşağıdaki yetkinlikler b
 
 ## 4. Eklenmesi Planlanan Özellikler
 - **ZCL_ZEROC_LOG_MANAGER:** Log kütüphanesi çekirdeğinin SAP S/4HANA 1909 SP05 için yeniden düzenlenmesi (temiz kod, minimal ve anlaşılır OOP). *(Yapıldı)*
+- **ZPR_ZEROC_LOG_DEMO:** Logger sınıfının örnek kullanımını gösteren ABAP OO raporu. *(Yapıldı)*
 - **ZIF_ZEROC_LOG_TARGET** arayüzü ile uyumlu standart hedef sınıfları (DB, Application Log, e-posta).
 - **Customizing tabloları:**
   - ZEROC_CFG: Global log ayarları (default seviye, async modu, rotasyon periyodu).
